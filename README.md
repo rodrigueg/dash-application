@@ -12,7 +12,7 @@ Pour que l'application fonctionne correctement, il faut que la matrice statistiq
 | ...                |      ...        |    ...       |      ...        |      ...        |    ...   |     ...       |
 | ...                |      ...        |    ...       |      ...        |      ...        |    ...   |     ...       |
 
-Pour afficher les différents boxplots, le script ne prendra bien sûr pas en compte les champs vides, il est donc normal que chaque boxplot n'est pas généré par le même nombre d'observations.
+Pour afficher les différents boxplots, le script ne prendra bien sûr pas en compte les champs vides, il est donc normal que chaque boxplot ne soit pas généré par le même nombre d'observations.
 Sur cette application, il est aussi possible d'activer (ou non) un filtre de Tukey. Le filtre de Tukey est un critère pour considérer si une valeur est considérée comme étant une valeur extrême.
 Soit <img src="https://render.githubusercontent.com/render/math?math=X_i"> une valeur présente dans la matrice pour un paramètre <img src="https://render.githubusercontent.com/render/math?math=P">. 
 <img src="https://render.githubusercontent.com/render/math?math=X_i"> est considérée comme étant une valeur extrême si elle n'est pas comprise dans l'intervalle <img src="https://render.githubusercontent.com/render/math?math=[Q_1 - 1.5 \times IQR; Q_3 + 1.5 \times IQR]"> 
