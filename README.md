@@ -7,7 +7,7 @@ Pour cela, il faut absolument avoir une matrice statistique (par exemple le fich
 Pour que l'application fonctionne correctement, il faut que la matrice statistique soit de cette forme ci-dessous:
 
 | IDPrelevement      |     Filtre_1    |   Filtre_2   |   Paramètre_1   |   Paramètre_2   |   ...    |   Paramètre_n |
-| ------------------ |: -------------: | -----------: | --------------: | --------------: | -------: | ------------: |
+|:------------------|:-------------:|:-----------:|:--------------:|:--------------:|:-------:|:------------:|
 | ...                |      ...        |    ...       |      ...        |      ...        |    ...   |     ...       |
 | ...                |      ...        |    ...       |      ...        |      ...        |    ...   |     ...       |
 | ...                |      ...        |    ...       |      ...        |      ...        |    ...   |     ...       |
