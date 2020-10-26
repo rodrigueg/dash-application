@@ -26,6 +26,7 @@ FILTER2 = "Riviere"
 
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+server = app.server
 app.title = "Rodrigue GOVAN x ISEA"
 app.layout = html.Div([
     
@@ -225,8 +226,6 @@ def update_graph(selected_ID1, selected_ID2, tukey, contents):
     else:
         return {}
 
-port = int(os.environ.get("PORT", 5000))
-
 
 if __name__ == '__main__':
-    app.run_server(debug=True, port=port)
+    app.run_server()
