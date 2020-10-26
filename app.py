@@ -227,4 +227,4 @@ def update_graph(selected_ID1, selected_ID2, tukey, contents):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server()
