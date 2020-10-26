@@ -1,0 +1,8 @@
+# pip install -U -r requirements.txt
+dash
+dash_core_components
+dash_html_components
+dash_table
+sklearn
+plotly
+pandas numpy
