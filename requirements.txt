@@ -7,3 +7,4 @@ sklearn
 plotly
 pandas
 numpy
+gunicorn
