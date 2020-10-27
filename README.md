@@ -18,4 +18,4 @@ Soit <img src="https://render.githubusercontent.com/render/math?math=X_i"> une v
 <img src="https://render.githubusercontent.com/render/math?math=X_i"> est considérée comme étant une valeur extrême si elle n'est pas comprise dans l'intervalle [<img src="https://render.githubusercontent.com/render/math?math=Q_1 - 1.5 \times IQR"> ; <img src="https://render.githubusercontent.com/render/math?math=Q_3 + 1.5 \times IQR">] 
 avec <img src="https://render.githubusercontent.com/render/math?math=Q_1"> le premier quartile, <img src="https://render.githubusercontent.com/render/math?math=Q_3"> le troisième quartile et <img src="https://render.githubusercontent.com/render/math?math=IQR"> l'écart interquartile (ie. <img src="https://render.githubusercontent.com/render/math?math=Q_3 - Q_1">).
 
-L'interface est disponible [ici](https://rodrigueg-dash.herokuapp.com/target=_blank).
+L'interface est disponible [ici](https://rodrigueg-dash.herokuapp.com/).
