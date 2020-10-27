@@ -24,6 +24,7 @@ PARAMETRES = list(PARAMETRES["Parametre"])
 FILTER1 = "RegionHydro"
 FILTER2 = "Riviere"
 
+github_link = u'https://github.com/rodrigueg/dash-application'
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
@@ -96,7 +97,10 @@ app.layout = html.Div([
     dcc.Graph(id='myBoxplot',
               style={'height':'calc(74.5vh)',
                      'width':'calc(98vw)'}),
-    html.Footer("© %s, Rodrigue GOVAN — ISEA. Tous droits réservés." % datetime.datetime.now().year,
+
+    html.Footer(html.Div(["© %s, Rodrigue GOVAN — ISEA. Tous droits réservés. "
+                % (datetime.datetime.now().year),
+                   html.A('code source', href=github_link, target='_blank')]),
                 style={'font-style':'italic'})
 ])
 
