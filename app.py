@@ -26,14 +26,7 @@ import dash_leaflet as dl
 import plotly.graph_objects as go
 import plotly.express as px
 
-# Multi-dropdown options
 from utils import *
-
-theme =  {'dark': True,
-          'detail': '#007439',
-          'primary': '#00EA64',
-          'secondary': '#6E6E6E',
-          }
 
 app = dash.Dash(__name__)
 app.title = "Rodrigue GOVAN x ISEA"
@@ -295,7 +288,7 @@ def update_well_text(dfjson):
         choice = [{'label':'Sélectionner tout', 'value':'all'}]
         choice += [{'label':c, 'value':c} for c in sorted(df[FILTER1].unique())]
         return ('{:,}'.format(df.shape[0]).replace(',', ' '),
-                '{:,}'.format(df.shape[1]).replace(',', ' '),
+                '{:,}'.format(len(df.loc[:,df.columns.isin(PARAMETRES)].columns)).replace(',', ' '),
                 '{:,}'.format(dp).replace(',', ' '),
                 '{:,}'.format(dm).replace(',', ' '),
                 choice)
