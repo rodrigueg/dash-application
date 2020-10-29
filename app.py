@@ -261,7 +261,7 @@ app.layout = html.Div(
               [Input('upload_file', 'contents'),
               Input('upload_file', 'filename')])
 def load_csv_file(contents, filename):
-    if contents is not None:
+    if (contents != None) and (len(filename) == 1):
         children = [
             parse_contents(c, n) for c, n in
             zip(contents, filename)]
