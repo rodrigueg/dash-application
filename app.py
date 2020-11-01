@@ -332,8 +332,8 @@ def update_map_table(data, cData, fig):
         df = pd.read_json(data, orient="split")
         df = df.loc[df["IDPrelevement"] == cData['points'][0]['customdata'][0]].replace("", np.nan, regex=True)
         df = df.dropna(axis=1,how='all')
-        print(dt.DataTable(columns=[{"name": i, "id": i} for i in df.columns],
-                           data=df.to_dict('records')).data, end="\n\n")
+##        print(dt.DataTable(columns=[{"name": i, "id": i} for i in df.columns],
+##                           data=df.to_dict('records')).data, end="\n\n")
         variable = df.columns
         df = df.T.rename(columns=lambda x:"Attribut")
         df["Variable"] = variable
