@@ -1,19 +1,10 @@
-# Import required libraries
-import os
-import pickle
-import copy
-import datetime
-import math
-import io
+########## Imports ##########
 
-from sklearn import preprocessing
-import multiprocessing as mp
-import json
+import os, copy, datetime, math, io, json, base64, warnings, time
+
 import numpy as np
-import base64
-import warnings
-
 import pandas as pd
+
 from flask import Flask
 import dash
 from dash.dependencies import Input, Output, State
@@ -26,14 +17,12 @@ import dash_leaflet as dl
 import plotly.graph_objects as go
 import plotly.express as px
 
+from sklearn import preprocessing
+import multiprocessing as mp
+
 from utils import *
 
-app = dash.Dash(__name__)
-app.title = "Rodrigue GOVAN x ISEA"
-server = app.server
-
-# Create global chart template
-mapbox_access_token = 'pk.eyJ1IjoiamFja2x1byIsImEiOiJjajNlcnh3MzEwMHZtMzNueGw3NWw5ZXF5In0.fk8k06T96Ml9CLGgKmk81w'
+########## Global variables ##########
 
 PARAMETRES = pd.DataFrame(pd.read_csv("data/parametres.csv", sep=";", encoding="utf-8"))
 PARAMETRES = list(PARAMETRES["Parametre"])
@@ -41,34 +30,13 @@ PARAMETRES = list(PARAMETRES["Parametre"])
 FILTER1 = "RegionHydro"
 FILTER2 = "Riviere"
 
-layout = dict(
-    autosize=True,
-    automargin=True,
-    margin=dict(
-        l=30,
-        r=30,
-        b=20,
-        t=40
-    ),
-    hovermode="closest",
-    plot_bgcolor="#F9F9F9",
-    paper_bgcolor="#F9F9F9",
-    legend=dict(font=dict(size=10), orientation='h'),
-    title='Satellite Overview',
-    mapbox=dict(
-        accesstoken=mapbox_access_token,
-        style="light",
-        center=dict(
-            lon=-78.05,
-            lat=42.54
-        ),
-        zoom=7,
-    )
-)
+########## Layout ##########
+app = dash.Dash(__name__)
+app.title = "Rodrigue GOVAN x ISEA"
+server = app.server
 
-# Create app layout
 app.layout = html.Div(
-    [
+    [########## Header ##########
         dcc.Store(id='data_loaded'),
         html.Div(
             [
@@ -95,7 +63,7 @@ app.layout = html.Div(
             className='row',
         ),
         html.Div(
-            [
+            [########## Upload & Informations ##########
                 html.Div(
                     [
                         dcc.Upload(id='upload_file',
@@ -172,7 +140,7 @@ app.layout = html.Div(
             className="row"
         ),
         html.Div(
-            [
+            [########## Filters ##########
                 html.Div(
                     [
                         dcc.Checklist(
@@ -214,7 +182,7 @@ app.layout = html.Div(
             className='row'
         ),
         html.Div(
-            [
+            [########## Boxplots ##########
                 html.Div(
                     [
                         dcc.Graph(id='myBoxplot', style={'height':'calc(80vh)'})
@@ -223,25 +191,23 @@ app.layout = html.Div(
             ],
             className='pretty_container'
         ),
-##        html.Div(
-##            [
-##                html.Div(
-##                    [
-##                        dl.Map(dl.TileLayer(),
-##                               style={'width': '1000px', 'height': '500px'},
-##                               center=[615100, 7577320])
-##                    ],
-##                    className='pretty_container seven columns',
-##                ),
-##                html.Div(
-##                    [
-##                        dcc.Graph(id='aggregate_graph')
-##                    ],
-##                    className='pretty_container five columns',
-##                ),
-##            ],
-##            className='row'
-##        ),
+        html.Div(
+            [########## Map ##########
+                html.Div(
+                    [
+                        dcc.Graph(id='map', style={'height': '400px'})
+                    ],
+                    className='pretty_container eight columns',
+                ),
+                html.Div(id='map_div', style={'vertical-align':'middle'},
+                    #[
+                    #    dt.DataTable(id='map_table')
+                    #],
+                    className='pretty_container four columns',
+                ),
+            ],
+            className='row'
+        ),
         html.Footer(html.Div(["© %s, Rodrigue GOVAN — ISEA. Tous droits réservés. "
                 % (datetime.datetime.now().year)]),
                 style={'font-style':'italic'})
@@ -257,29 +223,29 @@ app.layout = html.Div(
         }
 )
 
+########## Callbacks ##########
+
 @app.callback(Output('data_loaded', 'data'),
               [Input('upload_file', 'contents'),
               Input('upload_file', 'filename')])
-def load_csv_file(contents, filename):
+def load_csv_file(contents, filename): ########## Parse the data ##########
     if (contents != None) and (len(filename) == 1):
         children = [
             parse_contents(c, n) for c, n in
             zip(contents, filename)]
         df = children[0]
-        return df.to_json(orient="split")
+        to_return = df.to_json(orient="split")
+        return to_return
     else:
         return []
 
-# Create callbacks
-
-# Selectors -> well text
 @app.callback([Output('ech_text', 'children'),
                Output('param_text', 'children'),
                Output('dp_text', 'children'),
                Output('dm_text', 'children'),
                Output('dd1', 'options')],
               [Input('data_loaded', 'data')])
-def update_well_text(dfjson):
+def update_well_text(dfjson): ########## Informations ##########
 
     if dfjson != []:
         df = pd.read_json(dfjson, orient="split")
@@ -313,21 +279,16 @@ def update_dd2(data, selected_rh):
                Input('dd2', 'value'),
                Input('data_loaded', 'data'),
               Input('apply_tukey', 'value')])
-def update_graph(selected_dd1, selected_dd2, data, tukey):
+def update_graph(selected_dd1, selected_dd2, data, tukey): ########## Generate the boxplots ##########
     if (selected_dd1 != []) and (selected_dd2 != []) and (data != []):
         df = pd.read_json(data, orient="split")
         parametres = sorted(list(df.columns[df.columns.isin(PARAMETRES)]), key=lambda x:x.lower())
-        if "all" in selected_dd1:
-            if "all" in selected_dd2: # ok
-                df = df.loc[:, parametres]
-            else: # ok
-                df = df.loc[(df[FILTER2].isin(selected_dd2)), parametres]
-        else:
-            df = df.loc[(df[FILTER1].isin(selected_dd1)), :]
-            if "all" in selected_dd2: # ok
-                df = df.loc[:, parametres]
-            else: # ok
-                df = df.loc[(df[FILTER2].isin(selected_dd2)), parametres]
+        if "all" not in selected_dd1:
+              df = df.loc[(df[FILTER1].isin(selected_dd1)), :]
+        if "all" not in selected_dd2:
+              df = df.loc[(df[FILTER2].isin(selected_dd2)), :]
+        df = df.loc[:, parametres]
+        
         data, labs, param, filter = load_data_points(df, tukey)
 
         fig = go.Figure()
@@ -344,25 +305,49 @@ def update_graph(selected_dd1, selected_dd2, data, tukey):
     else:
         return {}
 
-#@app.callback(Output('map_graph', 'figure'),
-#              Input('data_loaded', 'data'))
-def make_main_figure(data):
+@app.callback(Output('map', 'figure'),
+              Input('data_loaded', 'data'))
+def make_main_figure(data): ########## Generate the map ##########
 
     if data == []: return {}
     
     df = pd.read_json(data, orient="split")
-    df["X_WGS"] = pd.to_numeric(df["X_WGS"])
-    df["Y_WGS"] = pd.to_numeric(df["Y_WGS"])
-    #df = gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(dff["X_WGS"], dff["Y_WGS"]), crs="EPSG:32758")
-
-    fig = px.scatter_mapbox(df, lat="X_WGS", lon="Y_WGS", hover_name="Riviere", hover_data=["IDPrelevement"],
-                        color_discrete_sequence=["peru"], zoom=3, height=300)
+    df["Latitude"] = pd.to_numeric(df["Latitude"])
+    df["Longitude"] = pd.to_numeric(df["Longitude"])
+    
+    fig = px.scatter_mapbox(df, lat="Latitude", lon="Longitude", hover_name=FILTER1,
+                            hover_data=["IDPrelevement"],
+                            color_discrete_sequence=["cornflowerblue"], opacity=0.75, zoom=7)
     fig.update_layout(mapbox_style="open-street-map")
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     
     return fig
 
+@app.callback(Output('map_div', 'children'),
+              [Input('data_loaded', 'data'),
+               Input('map', 'clickData'),
+               Input('map', 'figure')])
+def update_map_table(data, cData, fig):
+    if cData is not None: ########## Generate the list from the map ##########
+        df = pd.read_json(data, orient="split")
+        df = df.loc[df["IDPrelevement"] == cData['points'][0]['customdata'][0]].replace("", np.nan, regex=True)
+        df = df.dropna(axis=1,how='all')
+        print(dt.DataTable(columns=[{"name": i, "id": i} for i in df.columns],
+                           data=df.to_dict('records')).data, end="\n\n")
+        variable = df.columns
+        df = df.T.rename(columns=lambda x:"Attribut")
+        df["Variable"] = variable
+        df = df.reindex(columns=["Variable", "Attribut"])
+        to_return = dt.DataTable(id='map_table',
+                            columns=[{"name": i, "id": i} for i in df.columns],
+                            data=df.to_dict('records'),
+                            fixed_rows={'headers': True},
+                            style_table={'height': '400px'})
+        return to_return
+    elif (fig != {}) and (data != []):
+        return html.H6("Sélectionnez un échantillon pour visualiser ses paramètres analysés")
 
-# Main
+
+########## Launching ##########
 if __name__ == '__main__':
-    app.run_server(debug=True)#, threaded=True)
+    app.run_server(debug=True)
