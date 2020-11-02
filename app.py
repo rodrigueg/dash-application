@@ -143,19 +143,6 @@ app.layout = html.Div(
             [########## Filters ##########
                 html.Div(
                     [
-                        dcc.Checklist(
-                            id='apply_tukey',
-                            options=[
-                                {'label': '  Appliquer le filtre de Tukey', 'value': 'oui'}
-                            ],
-                            value=['oui'],
-                            style={"margin-top":"5px"}
-                        ),
-                    ],
-                    className='pretty_container two columns',
-                ),
-                html.Div(
-                    [
                         dcc.Dropdown(id="dd1",
                                      options=[],
                                      value=[],
@@ -177,6 +164,19 @@ app.layout = html.Div(
                                      placeholder="Filtre par %s" %FILTER2,)
                     ],
                     className='pretty_container seven columns',
+                ),
+                html.Div(
+                    [
+                        dcc.Checklist(
+                            id='apply_tukey',
+                            options=[
+                                {'label': '  Appliquer le filtre de Tukey', 'value': 'oui'}
+                            ],
+                            value=['oui'],
+                            style={"margin-top":"5px"}
+                        ),
+                    ],
+                    className='pretty_container two columns',
                 ),
             ],
             className='row'
