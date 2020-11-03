@@ -24,8 +24,9 @@ from utils import *
 
 ########## Global variables ##########
 
-PARAMETRES = pd.DataFrame(pd.read_csv("data/parametres.csv", sep=";", encoding="utf-8"))
-PARAMETRES = list(PARAMETRES["Parametre"])
+parametres_unite = pd.DataFrame(pd.read_csv("data/parametres_unite.csv", sep=";",
+                                            encoding="utf-8", keep_default_na=False))
+PARAMETRES = list(parametres_unite["Parametre"])
 
 FILTER1 = "RegionHydro"
 FILTER2 = "Riviere"
@@ -197,13 +198,13 @@ app.layout = html.Div(
                     [
                         dcc.Graph(id='map', style={'height': '400px'})
                     ],
-                    className='pretty_container eight columns',
+                    className='pretty_container seven columns',
                 ),
                 html.Div(id='map_div', style={'vertical-align':'middle'},
                     #[
                     #    dt.DataTable(id='map_table')
                     #],
-                    className='pretty_container four columns',
+                    className='pretty_container five columns',
                 ),
             ],
             className='row'
@@ -337,7 +338,10 @@ def update_map_table(data, cData, fig):
         variable = df.columns
         df = df.T.rename(columns=lambda x:"Attribut")
         df["Variable"] = variable
-        df = df.reindex(columns=["Variable", "Attribut"])
+        df["Unite"] = "-"
+        for p in df.loc[df["Variable"].isin(PARAMETRES), "Variable"]:
+            df.loc[df["Variable"] == p, "Unite"] = parametres_unite.loc[parametres_unite["Parametre"] == p, "Unite"].unique()[0]
+        df = df.reindex(columns=["Variable", "Attribut", "Unite"])
         to_return = dt.DataTable(id='map_table',
                             columns=[{"name": i, "id": i} for i in df.columns],
                             data=df.to_dict('records'),
