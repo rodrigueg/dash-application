@@ -32,3 +32,5 @@ ______________________
 
 *Il paraît qu'une image vaut mieux que mille mots. Du coup, pourquoi s'en priver ?*
 
+
+![screenshot](assets/screenshot.png)
