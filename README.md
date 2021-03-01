@@ -19,7 +19,7 @@ Soit <img src="https://render.githubusercontent.com/render/math?math=X_i"> une v
 avec <img src="https://render.githubusercontent.com/render/math?math=Q_1"> le premier quartile, <img src="https://render.githubusercontent.com/render/math?math=Q_3"> le troisième quartile et <img src="https://render.githubusercontent.com/render/math?math=IQR"> l'écart interquartile (ie. <img src="https://render.githubusercontent.com/render/math?math=Q_3 - Q_1">).
 
 
-$`\sqrt{2}`$
+<pre xml:lang="latex">\sqrt{2}</pre>
 
 ______________________
 
