@@ -19,6 +19,7 @@ Soit <img src="https://render.githubusercontent.com/render/math?math=X_i"> une v
 avec <img src="https://render.githubusercontent.com/render/math?math=Q_1"> le premier quartile, <img src="https://render.githubusercontent.com/render/math?math=Q_3"> le troisième quartile et <img src="https://render.githubusercontent.com/render/math?math=IQR"> l'écart interquartile (ie. <img src="https://render.githubusercontent.com/render/math?math=Q_3 - Q_1">).
 
 **UPDATE**
+
 *23/02/2021* : La version 2.5 répare quelques bugs au niveau des appels de fonctions. Elle ajoute une optimisation considérable du traitement du fichier chargé (temps de chargement au moins 3 fois plus rapide d'après nos tests).
 
 
