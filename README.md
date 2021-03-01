@@ -22,6 +22,7 @@ avec <img src="https://render.githubusercontent.com/render/math?math=Q_1"> le pr
 
 *23/02/2021* : La version 2.5 répare quelques bugs au niveau des appels de fonctions. Elle ajoute une optimisation considérable du traitement du fichier chargé (temps de chargement au moins 3 fois plus rapide d'après nos tests).
 
+______________________
 
 *Il paraît qu'une image vaut mieux que mille mots. Du coup, pourquoi s'en priver ?*
 
