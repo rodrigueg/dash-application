@@ -23,7 +23,7 @@ ______________________
 
 **UPDATE**
 
-*23/02/2021* - v.25 : 
+*23/02/2021* - v2.5 : 
 - optimisation considérable du traitement du fichier chargé (temps de chargement au moins 3 fois plus rapide d'après nos tests).
 - quelques bugs au niveau des appels de fonctions réparés
 - ajout de la visualisation par élément
