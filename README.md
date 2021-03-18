@@ -28,6 +28,11 @@ ______________________
 - quelques bugs au niveau des appels de fonctions réparés
 - ajout de la visualisation par élément
 
+*18/03/2021* - v3.0 :
+- renouvellement du design
+- ajout des analyses par scénario (calcul des corrélations, test des égalités des médianes, acp, clustering)
+- affichage des paramètres présents par scénario (avec leur variabilité et leur pourcentage de données présentes)
+
 ______________________
 
 *Il paraît qu'une image vaut mieux que mille mots. Du coup, pourquoi s'en priver ?*
